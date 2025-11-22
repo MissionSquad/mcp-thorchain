@@ -1,5 +1,5 @@
 {
-  "name": "mcp-thorchain",
+  "name": "@missionsquad/mcp-thorchain",
   "version": "1.0.0",
   "description": "MCP server for accessing THORChain blockchain data",
   "type": "module",
@@ -20,6 +20,13 @@
   ],
   "author": "",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MissionSquad/mcp-thorchain.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.22.0",
     "zod": "3.23.8"

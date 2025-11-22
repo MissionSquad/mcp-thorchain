@@ -18,6 +18,14 @@ A Model Context Protocol (MCP) server providing access to THORChain blockchain d
 
 ## Installation
 
+### From npm (Recommended)
+
+```bash
+npm install -g @missionsquad/mcp-thorchain
+```
+
+### From Source
+
 ```bash
 # Clone the repository
 git clone https://github.com/MissionSquad/mcp-thorchain.git
