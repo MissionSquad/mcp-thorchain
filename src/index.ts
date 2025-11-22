@@ -8,11 +8,12 @@
  * - @modelcontextprotocol/sdk: 1.22.0
  * - zod: 3.23.8
  *
- * Note: @ts-nocheck is used due to type incompatibilities between Zod v3.23.8
- * (bundled with SDK) and TypeScript's strict type checking. Runtime behavior is correct.
+ * Note: Type assertions (as any) on inputSchema are necessary due to a known issue
+ * with Zod version compatibility in the MCP SDK. TypeScript sees our Zod instance
+ * and the SDK's bundled Zod as incompatible types, even though they're the same version.
+ * See: https://github.com/modelcontextprotocol/typescript-sdk/issues/891
+ * Runtime validation remains intact and type-safe.
  */
-
-// @ts-nocheck
 
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js"
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
@@ -36,13 +37,6 @@ const server = new McpServer({
 })
 
 /**
- * NOTE: Type assertions (as any) are used for inputSchema parameters due to a known
- * incompatibility between Zod v3.23.8 (bundled with @modelcontextprotocol/sdk@1.22.0)
- * and TypeScript's type inference for ZodRawShape. Runtime validation remains intact.
- * See: https://github.com/modelcontextprotocol/typescript-sdk/issues/891
- */
-
-/**
  * Tool: get-transaction
  * Fetches detailed information about a specific THORChain transaction
  */
@@ -59,7 +53,8 @@ server.registerTool(
         .describe("Transaction hash (64-character hexadecimal string)"),
     } as any,
   },
-  async ({ txid }: any) => {
+  async (args: any) => {
+    const { txid } = args
     try {
       const response = await getTransaction(txid)
 
@@ -118,7 +113,7 @@ Output: ${outputAssets}${feeInfo}`
       return {
         content: [
           {
-            type: "text",
+            type: "text" as const,
             text: result,
           },
         ],
@@ -158,7 +153,8 @@ server.registerTool(
         .describe("Pagination offset (default: 0)"),
     } as any,
   },
-  async ({ address, limit = 10, offset = 0 }: any) => {
+  async (args: any) => {
+    const { address, limit = 10, offset = 0 } = args
     try {
       const response = await getAddressHistory(address, limit, offset)
 
@@ -166,7 +162,7 @@ server.registerTool(
         return {
           content: [
             {
-              type: "text",
+              type: "text" as const,
               text: `No transactions found for address ${address}.`,
             },
           ],
@@ -194,7 +190,7 @@ ${response.meta.nextPageToken ? `More results available. Use offset=${offset + l
       return {
         content: [
           {
-            type: "text",
+            type: "text" as const,
             text: result,
           },
         ],
@@ -224,7 +220,8 @@ server.registerTool(
         .describe("Time period for statistics (default: 24h)"),
     } as any,
   },
-  async ({ period = "24h" }: any) => {
+  async (args: any) => {
+    const { period = "24h" } = args
     try {
       const response = await getPools(period)
 
@@ -232,7 +229,7 @@ server.registerTool(
         return {
           content: [
             {
-              type: "text",
+              type: "text" as const,
               text: "No pools data available.",
             },
           ],
@@ -267,7 +264,7 @@ ${poolsList.join("\n\n")}`
       return {
         content: [
           {
-            type: "text",
+            type: "text" as const,
             text: result,
           },
         ],
@@ -297,7 +294,8 @@ server.registerTool(
         .describe("Pool asset identifier (e.g., BTC.BTC, ETH.ETH, ETH.USDC-0XA0B86991C6218B36C1D19D4A2E9EB0CE3606EB48)"),
     } as any,
   },
-  async ({ asset }: any) => {
+  async (args: any) => {
+    const { asset } = args
     try {
       const pool = await getPoolDetail(asset)
 
@@ -329,7 +327,7 @@ Activity:
       return {
         content: [
           {
-            type: "text",
+            type: "text" as const,
             text: result,
           },
         ],
@@ -383,7 +381,7 @@ Users:
       return {
         content: [
           {
-            type: "text",
+            type: "text" as const,
             text: result,
           },
         ],
@@ -416,7 +414,7 @@ server.registerTool(
         return {
           content: [
             {
-              type: "text",
+              type: "text" as const,
               text: "No inbound addresses available.",
             },
           ],
@@ -448,7 +446,7 @@ Note: Always verify addresses are not halted before sending funds.`
       return {
         content: [
           {
-            type: "text",
+            type: "text" as const,
             text: result,
           },
         ],
