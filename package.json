@@ -1,0 +1,34 @@
+{
+  "name": "mcp-thorchain",
+  "version": "1.0.0",
+  "description": "MCP server for accessing THORChain blockchain data",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "mcp-thorchain": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "thorchain",
+    "blockchain",
+    "model-context-protocol"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.22.0",
+    "zod": "3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "24.10.1",
+    "typescript": "5.9.3"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
